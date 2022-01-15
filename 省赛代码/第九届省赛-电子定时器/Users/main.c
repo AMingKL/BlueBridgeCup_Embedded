@@ -300,7 +300,7 @@ void TIM4_IRQHandler(void)
 			 Timer_Formal.min=59;
 			 Timer_Formal.sec=59;
 			}
-			if((Timer_Formal.hour&&Timer_Formal.min&&Timer_Formal.sec)==0)
+			if(Timer_Formal.hour==0&&Timer_Formal.min==0&&Timer_Formal.sec==0)
 			{
 			 TimerState=Standby;
 			}
