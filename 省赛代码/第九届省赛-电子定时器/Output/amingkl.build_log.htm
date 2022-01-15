@@ -1,0 +1,62 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\liuhongming\OneDrive\桌面\练习-省赛题\第九届省赛-电子定时器\Project\amingkl.uvproj
+Project File Date:  01/13/2022
+
+<h2>Output:</h2>
+Build target 'amingkl'
+compiling main.c...
+linking...
+Program Size: Code=13934 RO-data=4830 RW-data=88 ZI-data=1048  
+"..\Output\amingkl.axf" - 0 Error(s), 0 Warning(s).
+</pre>
+</body>
+</html>
+axf" 
+Erasing Done.
+Program Speed: 12.33 KByte/s
+Programming Done.
+error:  #20: identifier "Sec" is undefined
+                         Sec=0;
+..\Users\main.c(107): error:  #20: identifier "Hour" is undefined
+                         case 0:(Hour>= 23)?(Hour = 0 ):( Hour = Hour + 1);break;
+..\Users\main.c(108): error:  #20: identifier "Min" is undefined
+                         case 1:(Min>= 59)?(Min = 0 ):( Min = Min + 1);break;   
+..\Users\main.c(109): error:  #20: identifier "Sec" is undefined
+                         case 2:(Sec>= 59)?(Sec = 0 ):( Sec = Sec + 1);break;
+..\Users\main.c(127): error:  #20: identifier "Hour" is undefined
+                         case 0:(Hour>= 23)?(Hour = 0 ):( Hour = Hour + 1);Timer_Temp.hour=Hour;break;
+..\Users\main.c(128): error:  #20: identifier "Min" is undefined
+                         case 1:(Min>= 59)?(Min = 0 ):( Min = Min + 1);Timer_Temp.min=Min;break;        
+..\Users\main.c(129): error:  #20: identifier "Sec" is undefined
+                         case 2:(Sec>= 59)?(Sec = 0 ):( Sec = Sec + 1);Timer_Temp.sec=Sec;break;
+..\Users\main.c(168): error:  #20: identifier "Hour" is undefined
+                          Hour=Hour;
+..\Users\main.c(169): error:  #20: identifier "Min" is undefined
+                                Min=Min;
+..\Users\main.c(170): error:  #20: identifier "Sec" is undefined
+                                Sec=Sec;
+..\Users\main.c(172): error:  #20: identifier "Hour" is undefined
+                        if(Hour||Min||Sec)
+..\Users\main.c(172): error:  #20: identifier "Min" is undefined
+                        if(Hour||Min||Sec)
+..\Users\main.c(172): error:  #20: identifier "Sec" is undefined
+                        if(Hour||Min||Sec)
+..\Users\main.c(184): error:  #20: identifier "Hour" is undefined
+    Hour=Read_eeprom(TimerNum*3+0);
+..\Users\main.c(185): error:  #20: identifier "Min" is undefined
+        Min=Read_eeprom(TimerNum*3+1);
+..\Users\main.c(186): error:  #20: identifier "Sec" is undefined
+        Sec=Read_eeprom(TimerNum*3+2);
+..\Users\main.c(227): error:  #20: identifier "Hour" is undefined
+        sprintf((char*)Timestring,"     %.2d: %.2d: %.2d         ",Hour,Min,Sec);
+..\Users\main.c(227): error:  #20: identifier "Min" is undefined
+        sprintf((char*)Timestring,"     %.2d: %.2d: %.2d         ",Hour,Min,Sec);
+..\Users\main.c(227): error:  #20: identifier "Sec" is undefined
+        sprintf((char*)Timestring,"     %.2d: %.2d: %.2d         ",Hour,Min,Sec);
+..\Users\main.c: 0 warnings, 21 errors
+"..\Output\amingkl.axf" - 21 Error(s), 0 Warning(s).
+Target not created
