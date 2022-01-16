@@ -138,7 +138,7 @@ void Lcd_Proc(void)
 		/*                屏幕第四行                          */
 		sprintf((char*)MaxVoltstring,"  Max Volt: %d.%.2dV   ",VoltSystem.MaxVoltValue/100,VoltSystem.MaxVoltValue%100);
 		/*                屏幕第五行                          */
-		sprintf((char*)MinVoltstring,"  Max Volt: %d.%.2dV   ",VoltSystem.MinVoltValue/100,VoltSystem.MinVoltValue%100);
+		sprintf((char*)MinVoltstring,"  Min Volt: %d.%.2dV   ",VoltSystem.MinVoltValue/100,VoltSystem.MinVoltValue%100);
 		/*                屏幕第六行                          */
 		sprintf((char*)UpperLedstring,"  Upper: LD%d         ",VoltSystem.UpperLed);
 		/*                屏幕第七行                          */
