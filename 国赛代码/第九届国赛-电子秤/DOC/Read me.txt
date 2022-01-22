@@ -1,0 +1,193 @@
+/**
+  *************************************************************************************************************************
+  * @file    main.c
+  * @author  LiuHongMing
+  * @version V1.0
+  * @date    2022-01-22
+  * @brief   蓝桥杯嵌入式第九届国赛题-电子秤
+  *************************************************************************************************************************
+  * @attention
+  *
+  * 
+  * 
+  *************************************************************************************************************************
+  */
+/* Includes -------------------------------------------------------------------------------------------------------------*/
+#include "myconfig.h"
+/* 函数定义 -----------------------------------------------------------------------------------------------------------------*/
+void ADC_Proc(void);
+void Lcd_Proc(void);
+void Key_Proc(void);
+void Led_Proc(void);
+/* 变量定义 -----------------------------------------------------------------------------------------------------------------*/
+/* 串口相关变量 */
+uint8_t RxCounter;
+uint8_t RxoverFlag;
+uint8_t RxBuffer[25];
+
+
+uint8_t lcdstr[20];
+float  AO1_VALUE=0;
+uint8_t adc_flag,lcd_flag;
+
+uint8_t key_val = 0;
+uint8_t adc_key_flag;
+
+int main(void)
+{	
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+  Delay_Init();	
+	LED_Init();
+	Key_Init();
+	LCD_Init();
+	Tim4_Init();
+	Usart2_Init();
+	
+  ADC_Configuration();//ADC模块
+  DMA_Configuration();
+	
+	Delay_Ms(200);
+	
+	
+	while(1)
+	{	
+		ADC_Proc();
+		Lcd_Proc();
+		Key_Proc();
+			
+	}
+}
+
+
+void Key_Proc(void)
+{
+	if(adc_key_flag==1)
+	{
+		key_val = Adc_Key_Read();
+	
+	 if(key_val != 0)
+	 {
+	 }
+	 adc_key_flag=0;
+	}
+}
+
+void ADC_Proc(void)
+{
+	if(adc_flag)
+	{
+		AO1_VALUE = (get_adc()*3.30/4095.0);
+		
+		if(AO1_VALUE>=3.29)//板子接触不良，不添加这句读取的电压在3.30V停留较短
+		{
+		 AO1_VALUE=3.30;
+		}
+		System.weight=AO1_VALUE*3.03;
+		adc_flag=0;
+	}
+}
+
+void Lcd_Proc(void)
+{
+	if(lcd_flag==1)
+	{
+		if(System.Interface==DATA)
+		{
+			/*                屏幕第一行                          */
+			LCD_DisplayStringLine(Line0,"The 9th LQB GuoSaiTi");
+			/*                屏幕第二行                          */
+			LCD_DisplayStringLine(Line2,"       Data         ");
+			/*                屏幕第三行                          */
+			sprintf((char*)lcdstr,"  Number:%d           ",System.number);
+			LCD_DisplayStringLine(Line3 ,lcdstr);
+			/*                屏幕第四行                          */
+			sprintf((char*)lcdstr,"  Price:%.2f/kg          ",System.Goods1price);
+			LCD_DisplayStringLine(Line4 ,lcdstr);
+			/*                屏幕第五行                          */
+			sprintf((char*)lcdstr,"  Weight:%.2fkg          ",System.weight);
+			LCD_DisplayStringLine(Line5 ,lcdstr);
+			/*                屏幕第六行                          */
+			sprintf((char*)lcdstr,"  TotalPrice:%.1fyuan    ",System.totalprice);
+			LCD_DisplayStringLine(Line6 ,lcdstr);
+			/*                屏幕第九行                          */
+			LCD_DisplayStringLine(Line9," Author:LiuHongMing    ");	
+		}
+		else if(System.Interface==PARA)
+		{
+			/*                屏幕第一行                          */
+			LCD_DisplayStringLine(Line0,"The 9th LQB GuoSaiTi");
+			/*                屏幕第二行                          */
+			LCD_DisplayStringLine(Line2,"       Para         ");
+			/*                屏幕第三行                          */
+			sprintf((char*)lcdstr," Goods1:%.2fyuan/kg           ",System.Goods1price);
+			LCD_DisplayStringLine(Line3 ,lcdstr);
+			/*                屏幕第四行                          */
+			sprintf((char*)lcdstr," Goods2:%.2fyuan/kg          ",System.Goods2price);
+			LCD_DisplayStringLine(Line4 ,lcdstr);
+			/*                屏幕第五行                          */
+			sprintf((char*)lcdstr," Goods3:%.2fyuan/kg          ",System.Goods3price);
+			LCD_DisplayStringLine(Line5 ,lcdstr);
+			/*                屏幕第六行                          */
+			sprintf((char*)lcdstr," SetCnt:%d    ",System.setnumcnt);
+			LCD_DisplayStringLine(Line6 ,lcdstr);
+			/*                屏幕第九行                          */
+			LCD_DisplayStringLine(Line9," Author:LiuHongMing    ");	
+		}
+			lcd_flag=0;
+	}
+}
+
+/**
+ * @brief  定时器4中断服务函数-1ms中断
+ * @param  无
+ * @retval 无
+ */
+void TIM4_IRQHandler(void)
+{
+	static uint16_t adc_cnt,lcd_cnt,adc_ket_cnt;
+	
+	if(TIM_GetITStatus(TIM4,TIM_IT_Update) == 1) 
+	{
+		TIM_ClearITPendingBit(TIM4,TIM_IT_Update);
+		if(++adc_cnt==300) 
+		{
+			adc_cnt=0;
+			adc_flag=1;			
+		}
+		if(++lcd_cnt==100)
+		{
+			lcd_cnt=0;
+			lcd_flag=1;
+		}
+		if(++adc_ket_cnt==10)
+		{
+			adc_ket_cnt=0;
+			adc_key_flag=1;
+		}
+	}
+}
+
+/**
+ * @brief  串口2接收中断服务程序
+ * @param  无
+ * @retval 无
+ */
+void USART2_IRQHandler(void) 
+{	
+	if(USART_GetITStatus(USART2, USART_IT_RXNE) !=RESET)
+	{
+	  RxBuffer[RxCounter++]=USART_ReceiveData(USART2);
+	}
+	if(USART_GetITStatus(USART2,USART_IT_IDLE)!=RESET)
+	{
+		USART2->SR;
+		USART2->DR;
+		
+		RxoverFlag=1;
+	}
+}
+/*****************************************************END OF FILE*********************************************************/	
+
+snprintf((char*)lcdstr, sizeof(lcdstr), "  Button Value:%d", key_val);
+		LCD_DisplayStringLine(Line7,lcdstr);
+
