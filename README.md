@@ -33,6 +33,6 @@ USB转串口驱动：FT2232驱动
 
 copyright©2022 amingkl       
 
-![picture1](https://github.com/AMingKL/lanqiaobei_qianrushi/blob/main/1.png)
-![picture2](https://github.com/AMingKL/lanqiaobei_qianrushi/blob/main/2.png)
+![picture1](https://github.com/AMingKL/BlueBridgeCup_Embedded/blob/main/1.png)
+![picture2](https://github.com/AMingKL/BlueBridgeCup_Embedded/blob/main/2.png)
 
